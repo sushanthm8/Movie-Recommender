@@ -5,9 +5,11 @@ def euclidean_distance(a,b,x,y):
     return abs(b-a)
 
 def cosine_similarity(a,b,x,y):
-    cos_theta = a*x+b*y
-    cos_theta /= (abs(a)*abs(x))
-    theta = np.arccos(cos_theta)
+    cos_theta = (a*x+b*y)/(abs(a)*abs(x))
+    # print(cos_theta)
+    # print(cos_theta)
+    theta = np.arccos(cos_theta/2)
     return theta
 
-# print(np.arccos(0.5))
+def similarity(a,b,x,y):
+    return cosine_similarity(a,b,x,y)*euclidean_distance(a,b,x,y)

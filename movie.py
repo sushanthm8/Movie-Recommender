@@ -1,4 +1,3 @@
-# from data import Data
 import csv
 from re import L, X
 from wsgiref.validate import InputWrapper
@@ -15,11 +14,10 @@ movies = []
 
 class Movie:
     global genres_
-    #vector 
     x = y = 1
 
     def __init__(self, name, genres, rating):
-        self.name = name.split(" ")[0].lower()
+        self.name = name.lower()
         self.genres = genres
         self.rating = rating
     
@@ -34,13 +32,11 @@ class Movie:
 
     def make_vector(self):
         genre = self.genres[0].lower()
-        # print(genre)
         found = False
         for i in range(4):
             for j in range(len(genres_[i])):
                 if genre == genres_[i][j]:
                     found = True
-                    # print(i)
                     if i == 0:
                         self.x = self.y = float(self.rating)
                     elif i == 1:
@@ -51,33 +47,36 @@ class Movie:
                     else:
                         self.x = float(self.rating)
                         self.y = -float(self.rating)
-                    # category_no = i
                     break
             if found:
                 break
-            # print(genres_[i][j])
-            # print(genres_[i])
-            # for j in genres_[i]:
-            #     if genre == genres_[j]:
-            #         found = True
-            #         category_no = i
-            #         break
-            # if found:
-            #     break
 
     def get_x(self):
         return self.x
     
     def get_y(self):
         return self.y
+
+def find_similar(movie_):
+    # print(movie_.get_x(), movie_.get_y())
+    global movies
+    top_ten = [[0,None],[0,None],[0,None],[0,None],[0,None],[0,None],[0,None],[0,None],[0,None],[0,None]]
+    for i in range(len(movies)):
+        if movies[i].get_name() != movie_.get_name():
+            # print(movies[i].get_name()) 
+            # print(movies[i].get_x(), movies[i].get_y())
+            coeff = recommender.similarity(movies[i].get_x(), movies[i].get_y(), movie_.get_x(), movie_.get_y())
+            # print(coeff)
+            if coeff > top_ten[0][0]:
+                top_ten[0][0] = coeff
+                top_ten[0][1] = movies[i].get_name()
+        top_ten.sort(key=lambda x: x[0])
+    return top_ten
+
+    
     
 
 def main():
-    # f = open("data.txt", "r")
-    # for line in f:
-        # print(line)
-        # tmp = line.split()
-        # movies.append(Movie())
     with open("data/MovieGenre.csv", 'r') as file:
         reader = csv.reader(file)
         for row in reader:
@@ -101,27 +100,22 @@ def main():
 
     for movie in movies:
         movie.make_vector()
-        # print(movie.get_x(), movie.get_y())
 
-    # names = movies[0].get_name().split(" ")
-    
-    # print("|",movies[0].get_name().lower(),"|")
     inp = input("Enter a movie:")
     check = False
+    idx = 0
     while not check:
-        for movie in movies:
-            if inp.lower() == movie.get_name().lower():
+        for i in range(len(movies)):
+            if inp.lower() == movies[i].get_name().lower():
                 check = True
+                idx = i
         if not check :
             inp = input("That movie does not exist in the database. Please enter another one.")
-    print(inp)
+
+    top = find_similar(movies[idx])
+    for mov in top:
+        print(mov[1])
     
-
-
-    # print(movies[len(movies)-1].get_name(), movies[len(movies)-1].get_x(), movies[len(movies)-1].get_y())
-
-
-
 
 if __name__ == "__main__":
     main()
