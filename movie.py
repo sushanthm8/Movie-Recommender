@@ -1,6 +1,7 @@
 # from data import Data
 import csv
 from re import L, X
+from wsgiref.validate import InputWrapper
 import recommender
 
 genres_ = [
@@ -18,7 +19,7 @@ class Movie:
     x = y = 1
 
     def __init__(self, name, genres, rating):
-        self.name = name
+        self.name = name.split(" ")[0].lower()
         self.genres = genres
         self.rating = rating
     
@@ -102,7 +103,24 @@ def main():
         movie.make_vector()
         # print(movie.get_x(), movie.get_y())
 
+    # names = movies[0].get_name().split(" ")
+    
+    # print("|",movies[0].get_name().lower(),"|")
+    inp = input("Enter a movie:")
+    check = False
+    while not check:
+        for movie in movies:
+            if inp.lower() == movie.get_name().lower():
+                check = True
+        if not check :
+            inp = input("That movie does not exist in the database. Please enter another one.")
+    print(inp)
+    
+
+
     # print(movies[len(movies)-1].get_name(), movies[len(movies)-1].get_x(), movies[len(movies)-1].get_y())
+
+
 
 
 if __name__ == "__main__":
