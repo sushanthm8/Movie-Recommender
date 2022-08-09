@@ -1,6 +1,7 @@
 # from data import Data
 import csv
 from re import L, X
+import recommender
 
 genres_ = [
 ["action", "adventure"],
@@ -8,6 +9,8 @@ genres_ = [
 ["drama", "history"],
 ["comedy", "romance"]
 ]
+
+movies = []
 
 class Movie:
     global genres_
@@ -51,7 +54,7 @@ class Movie:
                     break
             if found:
                 break
-                # print(genres_[i][j])
+            # print(genres_[i][j])
             # print(genres_[i])
             # for j in genres_[i]:
             #     if genre == genres_[j]:
@@ -69,13 +72,11 @@ class Movie:
     
 
 def main():
-    movies = []
     # f = open("data.txt", "r")
     # for line in f:
         # print(line)
         # tmp = line.split()
         # movies.append(Movie())
-        # movies = []
     with open("data/MovieGenre.csv", 'r') as file:
         reader = csv.reader(file)
         for row in reader:
@@ -97,18 +98,11 @@ def main():
             if found :
                 movies.append(Movie(name,genres,rating))
 
-    # for i in genres_:
-        # print(i)
-
     for movie in movies:
-        # print(float(movie.get_rating()))
-        # print(movie.get_name(), movie.get_rating(), movie.get_genres())
         movie.make_vector()
-        print(movie.get_x(), movie.get_y())
+        # print(movie.get_x(), movie.get_y())
 
     # print(movies[len(movies)-1].get_name(), movies[len(movies)-1].get_x(), movies[len(movies)-1].get_y())
-    # num = 2
-    # print(-num)
 
 
 if __name__ == "__main__":
