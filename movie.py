@@ -101,10 +101,10 @@ def main():
         # print(i)
 
     for movie in movies:
-        print(movie.get_name(), type(float(movie.get_rating())))
+        # print(float(movie.get_rating()))
         # print(movie.get_name(), movie.get_rating(), movie.get_genres())
-        # movie.make_vector()
-        # print(movie.get_x(), movie.get_y())
+        movie.make_vector()
+        print(movie.get_x(), movie.get_y())
 
     # print(movies[len(movies)-1].get_name(), movies[len(movies)-1].get_x(), movies[len(movies)-1].get_y())
     # num = 2
